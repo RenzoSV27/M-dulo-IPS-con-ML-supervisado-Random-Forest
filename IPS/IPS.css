@@ -1,0 +1,119 @@
+/* ======== ESTILOS GENERALES ======== */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* ======== CABECERA ======== */
+header {
+  background-color: #1a73e8;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+header h1 {
+  font-size: 22px;
+  margin: 0;
+}
+
+nav.menu {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+nav.menu a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+nav.menu a:hover,
+nav.menu a.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ======== CONTENIDO PRINCIPAL ======== */
+main {
+  padding: 20px;
+}
+
+h2 {
+  color: #1a73e8;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+/* ======== TABLA ======== */
+.ips-table-section {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow-x: auto;
+}
+
+table.ips-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+table.ips-table th, 
+table.ips-table td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+table.ips-table th {
+  background-color: #e9f0fb;
+  color: #1a73e8;
+}
+
+table.ips-table tr:hover {
+  background-color: #f1f7ff;
+}
+
+/* ======== PIE DE PÁGINA ======== */
+footer {
+  text-align: center;
+  background-color: #1a73e8;
+  color: white;
+  padding: 10px 0;
+  font-size: 14px;
+  margin-top: 20px;
+  position: relative;
+}
+
+/* ======== RESPONSIVIDAD ======== */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav.menu {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  table.ips-table th, table.ips-table td {
+    font-size: 13px;
+    padding: 6px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+}

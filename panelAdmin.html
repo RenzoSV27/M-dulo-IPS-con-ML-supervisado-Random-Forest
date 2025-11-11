@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administrador - IPS</title>
+  <link rel="stylesheet" href="panelAdmin.css">
+</head>
+<body>
+  <div class="layout">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>Panel Administrador</h2>
+      </div>
+      <nav class="menu">
+        <a href="#" class="active">Inicio</a>
+        <a href="IPS/IPS.html">Tráfico de Red</a>
+        <a href="IPS/alertas.html">Alertas</a>
+      </nav>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="content">
+      <header>
+        <h1>Panel de Control</h1>
+      </header>
+
+      <section class="main-section">
+        <div class="features-grid">
+          <div class="feature-card card-monitoring">
+            <div class="card-icon">📊</div>
+            <div class="card-content">
+              <h3>Monitoreo en Tiempo Real</h3>
+              <p>Visualiza el tráfico de red capturado en tiempo real con análisis detallado de paquetes y conexiones activas.</p>
+            </div>
+            <div class="card-footer">
+              <a href="IPS/IPS.html" class="card-link">Ver Tráfico →</a>
+            </div>
+          </div>
+          
+          <div class="feature-card card-ml">
+            <div class="card-icon">🤖</div>
+            <div class="card-content">
+              <h3>Machine Learning</h3>
+              <p>Sistema de detección de intrusiones basado en aprendizaje supervisado usando el dataset CICIDS2017.</p>
+            </div>
+            <div class="card-footer">
+              <span class="card-badge">Modelo Activo</span>
+            </div>
+          </div>
+          
+          <div class="feature-card card-security">
+            <div class="card-icon">🛡️</div>
+            <div class="card-content">
+              <h3>Análisis de Seguridad</h3>
+              <p>Identificación automática de patrones sospechosos y posibles amenazas con alertas en tiempo real.</p>
+            </div>
+            <div class="card-footer">
+              <a href="IPS/alertas.html" class="card-link">Ver Alertas →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-stats">
+          <div class="stat-item">
+            <div class="stat-icon">🌐</div>
+            <div class="stat-info">
+              <div class="stat-label">Sistema</div>
+              <div class="stat-value">IPS ML</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon">🔍</div>
+            <div class="stat-info">
+              <div class="stat-label">Detección</div>
+              <div class="stat-value">Automática</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-info">
+              <div class="stat-label">Tiempo Real</div>
+              <div class="stat-value">Activo</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  </div>
+</body>
+</html>

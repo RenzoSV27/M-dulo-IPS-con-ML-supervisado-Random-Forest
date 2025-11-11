@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPS - Alertas de Seguridad</title>
+  <link rel="stylesheet" href="IPS.css">
+</head>
+<body>
+  <header>
+    <h1>Panel IPS - Alertas de Seguridad</h1>
+    <nav class="menu">
+      <a href="../panelAdmin.html">Inicio</a>
+      <a href="IPS.html">Tráfico de Red</a>
+      <a href="#" class="active">Alertas</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="ips-table-section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h2>Alertas de Intrusiones Detectadas</h2>
+        <div style="display: flex; gap: 15px; align-items: center; font-size: 14px; color: #666;">
+          <span id="contador-alertas" style="background: #ffebee; color: #c62828; padding: 6px 12px; border-radius: 6px;">0 alertas</span>
+          <span id="ultima-actualizacion" style="color: #999;">Actualizando...</span>
+        </div>
+      </div>
+
+      <div id="resumen-alertas" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+        <!-- Se llenará con estadísticas -->
+      </div>
+
+      <table class="ips-table">
+        <thead>
+          <tr>
+            <th>Hora</th>
+            <th>IP Origen</th>
+            <th>Puerto Origen</th>
+            <th>IP Destino</th>
+            <th>Puerto Destino</th>
+            <th>Tipo de Ataque</th>
+            <th>Probabilidad</th>
+            <th>Severidad</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-alertas">
+          <tr><td colspan="8">Cargando alertas...</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>2025 Sistema IPS - Sistemas Inteligentes y Machine Learning</p>
+  </footer>
+
+  <script>
+    function obtenerSeveridad(tipoAtaque, probabilidad) {
+      if (tipoAtaque === 'BENIGN') return { nivel: 'Baja', color: '#4caf50' };
+      
+      // Clasificar por tipo de ataque
+      const ataquesCriticos = ['DDoS', 'Botnet', 'Infiltration'];
+      const ataquesAltos = ['Web Attack - SQL Injection', 'Web Attack - XSS'];
+      const ataquesMedios = ['Web Attack - Brute Force', 'Port Scan'];
+      
+      if (ataquesCriticos.some(a => tipoAtaque.includes(a))) {
+        return { nivel: 'Crítica', color: '#d32f2f' };
+      } else if (ataquesAltos.some(a => tipoAtaque.includes(a))) {
+        return { nivel: 'Alta', color: '#f57c00' };
+      } else if (ataquesMedios.some(a => tipoAtaque.includes(a))) {
+        return { nivel: 'Media', color: '#fbc02d' };
+      } else {
+        // Basado en probabilidad
+        if (probabilidad >= 0.8) return { nivel: 'Alta', color: '#f57c00' };
+        if (probabilidad >= 0.6) return { nivel: 'Media', color: '#fbc02d' };
+        return { nivel: 'Baja', color: '#ffa726' };
+      }
+    }
+
+    function obtenerIconoAtaque(tipoAtaque) {
+      if (tipoAtaque === 'BENIGN') return '✓';
+      if (tipoAtaque.includes('DDoS')) return '🌐';
+      if (tipoAtaque.includes('Brute Force')) return '🔑';
+      if (tipoAtaque.includes('SQL Injection')) return '💉';
+      if (tipoAtaque.includes('XSS')) return '📜';
+      if (tipoAtaque.includes('Port Scan')) return '🔍';
+      if (tipoAtaque.includes('Infiltration')) return '🕵️';
+      return '⚠️';
+    }
+
+    async function cargarAlertas() {
+      try {
+        const respuesta = await fetch('CapturaTrafico/alertas.json');
+        if (!respuesta.ok) throw new Error("No se pudo cargar el archivo JSON");
+        
+        const alertas = await respuesta.json();
+        const tabla = document.getElementById('tabla-alertas');
+        const contador = document.getElementById('contador-alertas');
+        const ultimaAct = document.getElementById('ultima-actualizacion');
+        const resumen = document.getElementById('resumen-alertas');
+        
+        const ahora = new Date();
+        const hora = ahora.toLocaleTimeString('es-ES');
+        
+        if (!alertas || alertas.length === 0) {
+          tabla.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px; color: #999;">No hay alertas registradas. El sistema está funcionando normalmente.</td></tr>';
+          if (contador) contador.textContent = '0 alertas';
+          if (ultimaAct) ultimaAct.textContent = 'Sin alertas';
+          resumen.innerHTML = '';
+          return;
+        }
+
+        // Actualizar contadores
+        if (contador) contador.textContent = `${alertas.length} alerta${alertas.length > 1 ? 's' : ''}`;
+        if (ultimaAct) ultimaAct.textContent = `Última actualización: ${hora}`;
+
+        // Calcular estadísticas
+        const tiposAtaque = {};
+        let totalProbabilidad = 0;
+        alertas.forEach(alerta => {
+          const tipo = alerta.tipo_ataque || 'Desconocido';
+          tiposAtaque[tipo] = (tiposAtaque[tipo] || 0) + 1;
+          totalProbabilidad += alerta.probabilidad || 0;
+        });
+
+        const promedioProbabilidad = (totalProbabilidad / alertas.length * 100).toFixed(1);
+
+        // Mostrar resumen
+        const tiposUnicos = Object.keys(tiposAtaque).length;
+        resumen.innerHTML = `
+          <div style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); color: white; padding: 15px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: bold;">${alertas.length}</div>
+            <div style="font-size: 14px; opacity: 0.9;">Total Alertas</div>
+          </div>
+          <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 15px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: bold;">${tiposUnicos}</div>
+            <div style="font-size: 14px; opacity: 0.9;">Tipos de Ataque</div>
+          </div>
+          <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 15px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: bold;">${promedioProbabilidad}%</div>
+            <div style="font-size: 14px; opacity: 0.9;">Probabilidad Promedio</div>
+          </div>
+        `;
+
+        // Mostrar tabla de alertas
+        tabla.innerHTML = '';
+        alertas.slice().reverse().forEach(alerta => {
+          const severidad = obtenerSeveridad(alerta.tipo_ataque, alerta.probabilidad);
+          const icono = obtenerIconoAtaque(alerta.tipo_ataque);
+          const probabilidadPorcentaje = (alerta.probabilidad * 100).toFixed(1);
+          
+          const fila = `
+            <tr style="background-color: ${severidad.color}20;">
+              <td>${alerta.hora}</td>
+              <td>${alerta.ip_origen}</td>
+              <td>${alerta.puerto_origen}</td>
+              <td>${alerta.ip_destino}</td>
+              <td>${alerta.puerto_destino}</td>
+              <td style="font-weight: bold;">${icono} ${alerta.tipo_ataque || 'Desconocido'}</td>
+              <td>
+                <div style="background: ${severidad.color}40; padding: 4px 8px; border-radius: 4px; display: inline-block; min-width: 60px; text-align: center;">
+                  ${probabilidadPorcentaje}%
+                </div>
+              </td>
+              <td style="color: ${severidad.color}; font-weight: bold;">${severidad.nivel}</td>
+            </tr>`;
+          tabla.innerHTML += fila;
+        });
+      } catch (err) {
+        const tabla = document.getElementById('tabla-alertas');
+        tabla.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px; color: #d32f2f;">Error al cargar alertas. Asegúrate de que el servidor esté ejecutándose y que alertas.json exista.</td></tr>';
+        console.error('Error al cargar alertas:', err);
+      }
+    }
+
+    // Actualiza las alertas cada 3 segundos
+    setInterval(cargarAlertas, 3000);
+    cargarAlertas();
+  </script>
+</body>
+</html>
+

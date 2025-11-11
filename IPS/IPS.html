@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPS - Tráfico de Red</title>
+  <link rel="stylesheet" href="IPS.css">
+</head>
+<body>
+  <header>
+    <h1>Panel IPS - Monitoreo de Tráfico</h1>
+    <nav class="menu">
+      <a href="../panelAdmin.html">Inicio</a>
+      <a href="#" class="active">Tráfico de Red</a>
+      <a href="alertas.html">Alertas</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Sección de Alertas -->
+    <section id="seccion-alertas" style="display: none; margin-bottom: 20px;">
+      <div style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); color: white; padding: 15px 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+        <h3 style="margin: 0 0 10px 0; font-size: 18px;">🚨 Alertas de Seguridad</h3>
+        <div id="lista-alertas" style="max-height: 200px; overflow-y: auto;">
+          <!-- Las alertas se cargarán aquí -->
+        </div>
+      </div>
+    </section>
+
+    <section class="ips-table-section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h2>Tráfico de Red</h2>
+        <div style="display: flex; gap: 15px; align-items: center; font-size: 14px; color: #666;">
+          <span id="contador-paquetes" style="background: #e9f0fb; padding: 6px 12px; border-radius: 6px;">0 paquetes</span>
+          <span id="contador-alertas" style="background: #ffebee; color: #c62828; padding: 6px 12px; border-radius: 6px; display: none;">0 alertas</span>
+          <span id="ultima-actualizacion" style="color: #999;">Actualizando...</span>
+        </div>
+      </div>
+      <table class="ips-table">
+        <thead>
+          <tr>
+            <th>Hora</th>
+            <th>IP Origen</th>
+            <th>Puerto Origen</th>
+            <th>IP Destino</th>
+            <th>Puerto Destino</th>
+            <th>Protocolo</th>
+            <th>Etiqueta</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-trafico">
+          <tr><td colspan="7">Cargando datos...</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>2025 Sistema IPS - Sistemas Inteligentes y Machine Learning</p>
+  </footer>
+
+  <script>
+    async function cargarDatos() {
+      try {
+        const respuesta = await fetch('CapturaTrafico/trafico.json');
+        if (!respuesta.ok) throw new Error("No se pudo cargar el archivo JSON");
+        
+        const datos = await respuesta.json();
+        const tabla = document.getElementById('tabla-trafico');
+        tabla.innerHTML = "";
+
+        // Actualizar contador y hora
+        const contador = document.getElementById('contador-paquetes');
+        const ultimaAct = document.getElementById('ultima-actualizacion');
+        const ahora = new Date();
+        const hora = ahora.toLocaleTimeString('es-ES');
+        
+        if (!datos || datos.length === 0) {
+          tabla.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #999;">No hay tráfico capturado aún. Ejecuta capturaRed.py para comenzar.</td></tr>';
+          if (contador) contador.textContent = '0 paquetes';
+          if (ultimaAct) ultimaAct.textContent = 'Sin datos';
+          return;
+        }
+
+        if (contador) contador.textContent = `${datos.length} paquetes`;
+        if (ultimaAct) ultimaAct.textContent = `Última actualización: ${hora}`;
+
+        datos.slice(-20).reverse().forEach(paquete => {
+          // Obtener etiqueta (BENIGN o tipo de ataque)
+          const etiqueta = paquete.etiqueta || 'BENIGN';
+          const esAtaque = etiqueta !== 'BENIGN';
+          const colorFila = esAtaque ? 'background-color: #ffebee;' : '';
+          const colorTexto = esAtaque ? 'color: #c62828; font-weight: bold;' : 'color: #4caf50;';
+          const icono = esAtaque ? '⚠️ ' : '✓ ';
+          
+          const fila = `
+            <tr style="${colorFila}">
+              <td>${paquete.hora}</td>
+              <td>${paquete.ip_origen}</td>
+              <td>${paquete.puerto_origen}</td>
+              <td>${paquete.ip_destino}</td>
+              <td>${paquete.puerto_destino}</td>
+              <td>${paquete.protocolo}</td>
+              <td style="${colorTexto}">${icono}${etiqueta}</td>
+            </tr>`;
+          tabla.innerHTML += fila;
+        });
+      } catch (err) {
+        const tabla = document.getElementById('tabla-trafico');
+        tabla.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #d32f2f;">Error al cargar datos. Asegúrate de que el servidor esté ejecutándose y que trafico.json exista.</td></tr>';
+        console.error('Error al cargar datos:', err);
+      }
+    }
+
+    async function cargarAlertas() {
+      try {
+        const respuesta = await fetch('CapturaTrafico/alertas.json');
+        if (!respuesta.ok) return;
+        
+        const alertas = await respuesta.json();
+        const seccionAlertas = document.getElementById('seccion-alertas');
+        const listaAlertas = document.getElementById('lista-alertas');
+        const contadorAlertas = document.getElementById('contador-alertas');
+        
+        if (!alertas || alertas.length === 0) {
+          seccionAlertas.style.display = 'none';
+          if (contadorAlertas) contadorAlertas.style.display = 'none';
+          return;
+        }
+        
+        seccionAlertas.style.display = 'block';
+        if (contadorAlertas) {
+          contadorAlertas.style.display = 'inline-block';
+          contadorAlertas.textContent = `${alertas.length} alerta${alertas.length > 1 ? 's' : ''}`;
+        }
+        
+        listaAlertas.innerHTML = '';
+        alertas.slice(-10).reverse().forEach(alerta => {
+          const alertaDiv = document.createElement('div');
+          alertaDiv.style.cssText = 'background: rgba(255,255,255,0.2); padding: 10px; margin-bottom: 8px; border-radius: 6px; font-size: 14px;';
+          alertaDiv.innerHTML = `
+            <strong>${alerta.tipo_ataque || 'Ataque detectado'}</strong> 
+            (${(alerta.probabilidad * 100).toFixed(1)}%)<br>
+            <small>${alerta.hora} | ${alerta.ip_origen}:${alerta.puerto_origen} → ${alerta.ip_destino}:${alerta.puerto_destino}</small>
+          `;
+          listaAlertas.appendChild(alertaDiv);
+        });
+      } catch (err) {
+        console.error('Error al cargar alertas:', err);
+      }
+    }
+
+    // Actualiza la tabla y alertas cada 3 segundos
+    setInterval(() => {
+      cargarDatos();
+      cargarAlertas();
+    }, 3000);
+    cargarDatos();
+    cargarAlertas();
+  </script>
+</body>
+</html>
