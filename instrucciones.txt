@@ -1,9 +1,12 @@
-IPS librerías:
-pip install scapy
-scapy>=2.5.0
-pandas>=2.0.0
-numpy>=1.24.0
-scikit-learn>=1.3.0
+INSTRUCCIONES MÓDULO IPS
 
-Desde la carpeta IPS ML, ejecutar este omando en el cmd:
-python IPS\capturaRed.py
+1. Instalar dependencias (desde la carpeta raíz):
+   pip install scapy pandas numpy scikit-learn joblib
+
+2. Entrenar modelo (desde la carpeta raíz):
+   python IPS/entrenarModelo.py
+
+3. Ejecutar captura de red (desde la carpeta raíz):
+   python IPS/capturaRed.py
+
+NOTA: Requiere permisos de administrador para capturar tráfico de red.

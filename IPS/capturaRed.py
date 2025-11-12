@@ -3,24 +3,20 @@ import os
 from datetime import datetime
 from scapy.all import sniff
 
-# Importar módulos ML
 try:
     from detectorML import DetectorIPS
     from extraccionCaracteristicas import ExtractorCaracteristicas
     ML_DISPONIBLE = True
 except ImportError:
-    print("⚠️  Módulos ML no disponibles. El sistema funcionará sin detección ML.")
+    print("Modulos ML no disponibles. El sistema funcionara sin deteccion ML.")
     ML_DISPONIBLE = False
 
-#Ruta donde se guardará el archivo JSON
 carpeta_salida = "IPS/CapturaTrafico"
 archivo_json = os.path.join(carpeta_salida, "trafico.json")
 archivo_alertas = os.path.join(carpeta_salida, "alertas.json")
 
-# Crear carpeta si no existe
 os.makedirs(carpeta_salida, exist_ok=True)
 
-# Inicializar archivo JSON si no existe
 if not os.path.exists(archivo_json):
     with open(archivo_json, "w") as f:
         json.dump([], f, indent=4)
@@ -29,7 +25,6 @@ if not os.path.exists(archivo_alertas):
     with open(archivo_alertas, "w") as f:
         json.dump([], f, indent=4)
 
-# Cargar paquetes existentes o inicializar lista vacía
 try:
     with open(archivo_json, "r") as f:
         paquetes_capturados = json.load(f)
@@ -38,7 +33,6 @@ try:
 except (FileNotFoundError, json.JSONDecodeError):
     paquetes_capturados = []
 
-# Inicializar detector ML y extractor de características
 detector = None
 extractor = None
 if ML_DISPONIBLE:
@@ -46,15 +40,14 @@ if ML_DISPONIBLE:
         detector = DetectorIPS()
         extractor = ExtractorCaracteristicas()
         if detector.esta_disponible():
-            print("✅ Sistema de detección ML activado")
+            print("Sistema de deteccion ML activado")
         else:
-            print("⚠️  Modelo ML no entrenado. Ejecuta 'python IPS/entrenarModelo.py' primero")
+            print("Modelo ML no entrenado. Ejecuta 'python IPS/entrenarModelo.py' primero")
     except Exception as e:
-        print(f"⚠️  Error al inicializar ML: {e}")
+        print(f"Error al inicializar ML: {e}")
         detector = None
         extractor = None
 
-# Diccionario de protocolos conocidos
 protocolos = {
     1: "ICMP",
     6: "TCP",
@@ -78,7 +71,6 @@ def procesarPaquete(paquete):
         estado = "Activo"
         tamaño = len(paquete)
 
-        #Intentar obtener puertos si existen
         puerto_origen = 0
         puerto_destino = 0
         flags_tcp = {}
@@ -103,7 +95,6 @@ def procesarPaquete(paquete):
             puerto_destino = paquete["UDP"].dport
             header_length += 8
 
-        # Inicializar etiqueta como BENIGN por defecto
         etiqueta = "BENIGN"
         datos = {
             "hora": hora,
@@ -113,14 +104,12 @@ def procesarPaquete(paquete):
             "puerto_destino": puerto_destino if puerto_destino != 0 else "-",
             "protocolo": protocolo_nombre,
             "estado": estado,
-            "etiqueta": etiqueta  # Agregar etiqueta por defecto
+            "etiqueta": etiqueta
         }
 
-        # Extraer características para ML si está disponible
         prediccion_ml = None
         if extractor and detector and detector.esta_disponible():
             try:
-                # Preparar información del paquete para el extractor
                 info_paquete = {
                     'ip_origen': ip_origen,
                     'ip_destino': ip_destino,
@@ -133,33 +122,27 @@ def procesarPaquete(paquete):
                     'win_size': win_size
                 }
                 
-                # Agregar paquete al extractor
                 extractor.agregar_paquete(info_paquete)
                 
-                # Crear clave del flujo
                 ip1, ip2 = sorted([ip_origen, ip_destino])
                 port1, port2 = sorted([puerto_origen, puerto_destino])
                 clave_flujo = f"{ip1}:{port1}-{ip2}:{port2}"
                 
-                # Obtener características y predecir (cada N paquetes o cuando el flujo se cierra)
                 if len(extractor.flujos_activos[clave_flujo]['paquetes_fwd']) + \
                    len(extractor.flujos_activos[clave_flujo]['paquetes_bwd']) >= 5:
                     caracteristicas = extractor.obtener_caracteristicas_flujo(clave_flujo)
-                    # Agregar puerto destino (necesario para el modelo)
                     caracteristicas[' Destination Port'] = puerto_destino
                     
                     prediccion_ml = detector.predecir(caracteristicas)
                     
-                    # Actualizar etiqueta con la predicción del modelo
                     etiqueta = prediccion_ml['prediccion']
                     datos['etiqueta'] = etiqueta
                     
                     if prediccion_ml['es_ataque']:
-                        datos['estado'] = f"⚠️ {prediccion_ml['prediccion']}"
+                        datos['estado'] = f"{prediccion_ml['prediccion']}"
                         datos['alerta'] = True
                         datos['probabilidad'] = prediccion_ml['probabilidad']
                         
-                        # Guardar alerta
                         try:
                             with open(archivo_alertas, "r") as f:
                                 alertas = json.load(f)
@@ -178,26 +161,23 @@ def procesarPaquete(paquete):
                         alertas.append(alerta)
                         
                         with open(archivo_alertas, "w") as f:
-                            json.dump(alertas[-100:], f, indent=4)  # Mantener últimas 100 alertas
+                            json.dump(alertas[-100:], f, indent=4)
                         
-                        print(f"🚨 ALERTA: {prediccion_ml['prediccion']} ({prediccion_ml['probabilidad']*100:.1f}%) | {ip_origen}:{puerto_origen} -> {ip_destino}:{puerto_destino}")
+                        print(f"ALERTA: {prediccion_ml['prediccion']} ({prediccion_ml['probabilidad']*100:.1f}%) | {ip_origen}:{puerto_origen} -> {ip_destino}:{puerto_destino}")
             except Exception as e:
-                print(f"⚠️  Error en detección ML: {e}")
+                print(f"Error en deteccion ML: {e}")
 
         paquetes_capturados.append(datos)
 
-        # Guardar en JSON cada vez que se captura un paquete
         with open(archivo_json, "w") as f:
-            json.dump(paquetes_capturados[-1000:], f, indent=4)  # Mantener últimos 1000 paquetes
+            json.dump(paquetes_capturados[-1000:], f, indent=4)
 
-        # Limpiar flujos antiguos periódicamente
         if extractor:
             extractor.limpiar_flujos_antiguos()
 
         estado_display = datos['estado']
         print(f"[{hora}] {ip_origen}:{puerto_origen if puerto_origen != 0 else '-'} -> {ip_destino}:{puerto_destino if puerto_destino != 0 else '-'} | {protocolo_nombre} | {estado_display}")
 
-#Capturar tráfico
-print("📡 Capturando tráfico... (presiona Ctrl + C para detener)")
+print("Capturando trafico... (presiona Ctrl + C para detener)")
 sniff(count=30, prn=procesarPaquete)
-print("✅ Captura finalizada. Datos guardados en", archivo_json)
+print("Captura finalizada. Datos guardados en", archivo_json)

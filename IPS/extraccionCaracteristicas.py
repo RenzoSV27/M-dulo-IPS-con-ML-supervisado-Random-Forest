@@ -1,7 +1,3 @@
-"""
-Módulo para extraer características de flujos de red
-compatibles con el dataset CICIDS2017
-"""
 from collections import defaultdict
 from datetime import datetime, timedelta
 import numpy as np
