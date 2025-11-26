@@ -3,92 +3,105 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel de Administrador - IPS</title>
+  <title>Panel de Administrador - UPN</title>
   <link rel="stylesheet" href="panelAdmin.css">
 </head>
 <body>
-  <div class="layout">
-    
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="logo">
-        <h2>Panel Administrador</h2>
+  <div class="app-admin">
+    <aside class="barra-lateral">
+      <div class="marca-barra">
+        <div class="imagen-marca" aria-hidden="true">
+          <img src="upnLogo.png" alt="Logo UPN">
+        </div>
+        <div class="texto-marca">
+          <h2>Panel de Control</h2>
+          <p>Universidad Privada del Norte</p>
+        </div>
       </div>
-      <nav class="menu">
+      <nav class="menu-nav">
         <a href="#" class="active">Inicio</a>
         <a href="IPS/IPS.html">Tráfico de Red</a>
         <a href="IPS/alertas.html">Alertas</a>
       </nav>
+      <div class="pie-barra">
+        <p>Sistemas Inteligentes y Machine Learning.</p>
+      </div>
     </aside>
 
-    <!-- Contenido principal -->
-    <main class="content">
-      <header>
-        <h1>Panel de Control</h1>
-      </header>
-
-      <section class="main-section">
-        <div class="features-grid">
-          <div class="feature-card card-monitoring">
-            <div class="card-icon">📊</div>
-            <div class="card-content">
-              <h3>Monitoreo en Tiempo Real</h3>
-              <p>Visualiza el tráfico de red capturado en tiempo real con análisis detallado de paquetes y conexiones activas.</p>
-            </div>
-            <div class="card-footer">
-              <a href="IPS/IPS.html" class="card-link">Ver Tráfico →</a>
-            </div>
-          </div>
-          
-          <div class="feature-card card-ml">
-            <div class="card-icon">🤖</div>
-            <div class="card-content">
-              <h3>Machine Learning</h3>
-              <p>Sistema de detección de intrusiones basado en aprendizaje supervisado usando el dataset CICIDS2017.</p>
-            </div>
-            <div class="card-footer">
-              <span class="card-badge">Requiere Entrenamiento</span>
-            </div>
-          </div>
-          
-          <div class="feature-card card-security">
-            <div class="card-icon">🛡️</div>
-            <div class="card-content">
-              <h3>Análisis de Seguridad</h3>
-              <p>Identificación automática de patrones sospechosos y posibles amenazas con alertas en tiempo real.</p>
-            </div>
-            <div class="card-footer">
-              <a href="IPS/alertas.html" class="card-link">Ver Alertas →</a>
-            </div>
+    <main class="contenido">
+      <header class="barra-superior">
+        <div class="titulo-superior">
+          <p class="sobretitulo">Monitoreo Inteligente</p>
+          <h1>Seguridad UPN - IPS ML</h1>
+        </div>
+        <div class="acciones-superiores">
+          <span class="indicador-estado">Sistema Activo</span>
+          <div class="metrica-superior">
+            <strong>24h</strong>
+            <small>Observación continua</small>
           </div>
         </div>
+      </header>
 
-        <div class="quick-stats">
-          <div class="stat-item">
-            <div class="stat-icon">🌐</div>
-            <div class="stat-info">
-              <div class="stat-label">Sistema</div>
-              <div class="stat-value">IPS ML</div>
+      <section class="seccion-principal">
+        <div class="rejilla-destacados">
+          <article class="tarjeta-destacada tarjeta-monitoreo">
+            <div class="icono-tarjeta">📊</div>
+            <div class="contenido-tarjeta">
+              <h3>Monitoreo en Tiempo Real</h3>
+              <p>Visualiza el tráfico capturado y los patrones sospechosos con paneles claros y rulings UPN.</p>
             </div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-icon">🔍</div>
-            <div class="stat-info">
-              <div class="stat-label">Detección</div>
-              <div class="stat-value">Automática</div>
+            <div class="pie-tarjeta">
+              <a href="IPS/IPS.html" class="enlace-tarjeta">Ver Tráfico →</a>
             </div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-icon">⚡</div>
-            <div class="stat-info">
-              <div class="stat-label">Tiempo Real</div>
-              <div class="stat-value">Activo</div>
+          </article>
+          <article class="tarjeta-destacada tarjeta-ml">
+            <div class="icono-tarjeta">🤖</div>
+            <div class="contenido-tarjeta">
+              <h3>Machine Learning</h3>
+              <p>Modelo entrenado con CICIDS2017 para clasificar comportamiento legítimo y malicioso.</p>
             </div>
-          </div>
+            <div class="pie-tarjeta">
+              <span class="insignia-tarjeta">Requiere Entrenamiento</span>
+            </div>
+          </article>
+          <article class="tarjeta-destacada tarjeta-seguridad">
+            <div class="icono-tarjeta">🛡️</div>
+            <div class="contenido-tarjeta">
+              <h3>Análisis de Seguridad</h3>
+              <p>Alertas en vivo y seguimiento inmediato de incidentes dentro del campus y servicios en la nube.</p>
+            </div>
+            <div class="pie-tarjeta">
+              <a href="IPS/alertas.html" class="enlace-tarjeta">Ver Alertas →</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="estadisticas-rapidas">
+          <article class="elemento-estadistica">
+            <div class="icono-estadistica">🌐</div>
+            <div class="info-estadistica">
+              <div class="etiqueta-estadistica">Sistema</div>
+              <div class="valor-estadistica">IPS ML</div>
+            </div>
+          </article>
+          <article class="elemento-estadistica">
+            <div class="icono-estadistica">🔍</div>
+            <div class="info-estadistica">
+              <div class="etiqueta-estadistica">Detección</div>
+              <div class="valor-estadistica">Automática</div>
+            </div>
+          </article>
+          <article class="elemento-estadistica">
+            <div class="icono-estadistica">⚡</div>
+            <div class="info-estadistica">
+              <div class="etiqueta-estadistica">Tiempo Real</div>
+              <div class="valor-estadistica">Activo</div>
+            </div>
+          </article>
         </div>
       </section>
     </main>
-
   </div>
 </body>
 </html>

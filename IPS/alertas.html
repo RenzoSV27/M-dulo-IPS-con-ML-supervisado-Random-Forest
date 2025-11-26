@@ -7,58 +7,93 @@
   <link rel="stylesheet" href="IPS.css">
 </head>
 <body>
-  <header>
-    <h1>Panel IPS - Alertas de Seguridad</h1>
-    <nav class="menu">
-      <a href="../panelAdmin.html">Inicio</a>
-      <a href="IPS.html">Tráfico de Red</a>
-      <a href="#" class="active">Alertas</a>
-    </nav>
-  </header>
-
-  <main>
-    <section class="ips-table-section">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <h2>Alertas de Intrusiones Detectadas</h2>
-        <div style="display: flex; gap: 15px; align-items: center; font-size: 14px; color: #666;">
-          <span id="contador-alertas" style="background: #ffebee; color: #c62828; padding: 6px 12px; border-radius: 6px;">0 alertas</span>
-          <span id="ultima-actualizacion" style="color: #999;">Actualizando...</span>
+  <div class="app-ips">
+    <header class="cabecera-ips">
+      <div class="marca-cabecera">
+        <div class="logo-ips">
+          <img src="../upnLogo.png" alt="Logo Universidad Privada del Norte">
+        </div>
+        <div>
+          <p class="supertexto-cabecera">Sistemas Inteligentes y Aprendizaje Automático</p>
+          <h1>Alertas de Seguridad - IPS</h1>
         </div>
       </div>
-
-      <div id="resumen-alertas" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
-        <!-- Se llenará con estadísticas -->
+      <nav class="navegacion-ips">
+        <a href="../panelAdmin.html">Inicio</a>
+        <a href="IPS.html">Tráfico de Red</a>
+        <a class="active" href="#">Alertas</a>
+      </nav>
+      <div class="meta-cabecera">
+        <span>Vigilancia constante</span>
+        <span>Modelos entrenados</span>
       </div>
+    </header>
 
-      <table class="ips-table">
-        <thead>
-          <tr>
-            <th>Hora</th>
-            <th>IP Origen</th>
-            <th>Puerto Origen</th>
-            <th>IP Destino</th>
-            <th>Puerto Destino</th>
-            <th>Tipo de Ataque</th>
-            <th>Probabilidad</th>
-            <th>Severidad</th>
-          </tr>
-        </thead>
-        <tbody id="tabla-alertas">
-          <tr><td colspan="8">Cargando alertas...</td></tr>
-        </tbody>
-      </table>
-    </section>
-  </main>
+    <main class="principal-ips">
+      <section class="destacado-ips">
+        <div class="texto-destacado">
+          <h2>Alertas de Intrusos en la Red</h2>
+          <p>Seguimiento continuo de amenazas para proteger los servicios digitales de la Universidad Privada del Norte.</p>
+        </div>
+        <div class="contadores-destacados">
+          <div class="contador-destacado">
+            <span class="etiqueta-contador">Alertas activas</span>
+            <strong id="contador-alertas">0 alertas</strong>
+          </div>
+          <div class="contador-destacado">
+            <span class="etiqueta-contador">Última actualización</span>
+            <strong id="ultima-actualizacion">Actualizando...</strong>
+          </div>
+        </div>
+      </section>
 
-  <footer>
-    <p>2025 Sistema IPS - Sistemas Inteligentes y Machine Learning</p>
-  </footer>
+      <section class="alertas-ips">
+        <div class="tarjeta-alertas">
+          <div class="encabezado-alertas">
+            <p>Resumen de alertas</p>
+          </div>
+          <div id="resumen-alertas" class="resumen-alertas">
+            <!-- Las tarjetas de promedio aparecerán aquí -->
+          </div>
+        </div>
+      </section>
+
+      <section class="seccion-tabla">
+        <div class="encabezado-tabla">
+          <h2>Detalles de alertas</h2>
+          <p>Registro completo de intrusiones detectadas.</p>
+        </div>
+        <div class="contenedor-tabla">
+          <table class="tabla-ips">
+            <thead>
+              <tr>
+                <th>Hora</th>
+                <th>IP Origen</th>
+                <th>Puerto Origen</th>
+                <th>IP Destino</th>
+                <th>Puerto Destino</th>
+                <th>Tipo de Ataque</th>
+                <th>Probabilidad</th>
+                <th>Severidad</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-alertas">
+              <tr><td colspan="8">Cargando alertas...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="pie-ips">
+      <p>2025 Sistema IPS · Sistemas Inteligentes y Aprendizaje Automático · Universidad Privada del Norte</p>
+    </footer>
+  </div>
 
   <script>
     function obtenerSeveridad(tipoAtaque, probabilidad) {
       if (tipoAtaque === 'BENIGN') return { nivel: 'Baja', color: '#4caf50' };
       
-      // Clasificar por tipo de ataque
       const ataquesCriticos = ['DDoS', 'Botnet', 'Infiltration'];
       const ataquesAltos = ['Web Attack - SQL Injection', 'Web Attack - XSS'];
       const ataquesMedios = ['Web Attack - Brute Force', 'Port Scan'];
@@ -70,7 +105,6 @@
       } else if (ataquesMedios.some(a => tipoAtaque.includes(a))) {
         return { nivel: 'Media', color: '#fbc02d' };
       } else {
-        // Basado en probabilidad
         if (probabilidad >= 0.8) return { nivel: 'Alta', color: '#f57c00' };
         if (probabilidad >= 0.6) return { nivel: 'Media', color: '#fbc02d' };
         return { nivel: 'Baja', color: '#ffa726' };
@@ -110,11 +144,9 @@
           return;
         }
 
-        // Actualizar contadores
         if (contador) contador.textContent = `${alertas.length} alerta${alertas.length > 1 ? 's' : ''}`;
         if (ultimaAct) ultimaAct.textContent = `Última actualización: ${hora}`;
 
-        // Calcular estadísticas
         const tiposAtaque = {};
         let totalProbabilidad = 0;
         alertas.forEach(alerta => {
@@ -125,24 +157,22 @@
 
         const promedioProbabilidad = (totalProbabilidad / alertas.length * 100).toFixed(1);
 
-        // Mostrar resumen
         const tiposUnicos = Object.keys(tiposAtaque).length;
         resumen.innerHTML = `
-          <div style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); color: white; padding: 15px; border-radius: 10px; text-align: center;">
-            <div style="font-size: 24px; font-weight: bold;">${alertas.length}</div>
-            <div style="font-size: 14px; opacity: 0.9;">Total Alertas</div>
+          <div class="resumen-card">
+            <div class="resumen-card__valor">${alertas.length}</div>
+            <div class="resumen-card__etiqueta">Total alertas</div>
           </div>
-          <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 15px; border-radius: 10px; text-align: center;">
-            <div style="font-size: 24px; font-weight: bold;">${tiposUnicos}</div>
-            <div style="font-size: 14px; opacity: 0.9;">Tipos de Ataque</div>
+          <div class="resumen-card">
+            <div class="resumen-card__valor">${tiposUnicos}</div>
+            <div class="resumen-card__etiqueta">Tipos de ataque</div>
           </div>
-          <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 15px; border-radius: 10px; text-align: center;">
-            <div style="font-size: 24px; font-weight: bold;">${promedioProbabilidad}%</div>
-            <div style="font-size: 14px; opacity: 0.9;">Probabilidad Promedio</div>
+          <div class="resumen-card">
+            <div class="resumen-card__valor">${promedioProbabilidad}%</div>
+            <div class="resumen-card__etiqueta">Probabilidad promedio</div>
           </div>
         `;
 
-        // Mostrar tabla de alertas
         tabla.innerHTML = '';
         alertas.slice().reverse().forEach(alerta => {
           const severidad = obtenerSeveridad(alerta.tipo_ataque, alerta.probabilidad);
@@ -173,7 +203,6 @@
       }
     }
 
-    // Actualiza las alertas cada 3 segundos
     setInterval(cargarAlertas, 3000);
     cargarAlertas();
   </script>

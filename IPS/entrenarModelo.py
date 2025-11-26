@@ -16,7 +16,7 @@ def cargar_y_preprocesar_datos(ruta_dataset):
     print("Cargando dataset...")
     df = pd.read_csv(ruta_dataset)
     
-    print(f"   Dataset cargado: {df.shape[0]} filas, {df.shape[1]} columnas")
+    print(f"  Dataset cargado: {df.shape[0]} filas, {df.shape[1]} columnas")
     
     df.columns = df.columns.str.strip()
     

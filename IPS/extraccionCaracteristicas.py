@@ -3,13 +3,9 @@ from datetime import datetime, timedelta
 import numpy as np
 
 class ExtractorCaracteristicas:
-    """Extrae características de flujos de red para el modelo ML"""
     
     def __init__(self, timeout_flujo=60):
-        """
-        Args:
-            timeout_flujo: Tiempo en segundos para considerar un flujo como cerrado
-        """
+        
         self.timeout_flujo = timeout_flujo
         self.flujos_activos = defaultdict(lambda: {
             'paquetes_fwd': [],
@@ -32,14 +28,7 @@ class ExtractorCaracteristicas:
         })
     
     def agregar_paquete(self, paquete_info):
-        """
-        Agrega un paquete a un flujo y actualiza las características
         
-        Args:
-            paquete_info: dict con información del paquete
-                - ip_origen, ip_destino, puerto_origen, puerto_destino
-                - protocolo, timestamp, tamaño, flags_tcp, etc.
-        """
         # Crear clave única para el flujo (bidireccional)
         ip1, ip2 = sorted([paquete_info['ip_origen'], paquete_info['ip_destino']])
         port1, port2 = sorted([paquete_info.get('puerto_origen', 0), 
@@ -169,10 +158,8 @@ class ExtractorCaracteristicas:
         packet_length_std = np.std(todos_paquetes) if len(todos_paquetes) > 1 else 0
         packet_length_variance = packet_length_std ** 2
         
-        # Construir diccionario de características (orden según el dataset)
-        # Nota: Algunas características requieren análisis más profundo que simplificamos aquí
         caracteristicas = {
-            ' Destination Port': 0,  # Se debe obtener del flujo
+            ' Destination Port': 0,  
             ' Flow Duration': flow_duration,
             ' Total Fwd Packets': total_fwd_packets,
             ' Total Backward Packets': total_bwd_packets,

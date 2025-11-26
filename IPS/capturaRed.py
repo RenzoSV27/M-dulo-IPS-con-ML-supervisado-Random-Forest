@@ -11,7 +11,8 @@ except ImportError:
     print("Modulos ML no disponibles. El sistema funcionara sin deteccion ML.")
     ML_DISPONIBLE = False
 
-carpeta_salida = "IPS/CapturaTrafico"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+carpeta_salida = os.path.join(SCRIPT_DIR, "CapturaTrafico")
 archivo_json = os.path.join(carpeta_salida, "trafico.json")
 archivo_alertas = os.path.join(carpeta_salida, "alertas.json")
 

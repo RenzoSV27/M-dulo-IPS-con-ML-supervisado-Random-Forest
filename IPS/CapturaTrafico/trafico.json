@@ -1,0 +1,302 @@
+[
+    {
+        "hora": "13:23:03",
+        "ip_origen": "44.196.46.142",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 50055,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "44.196.46.142",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 50055,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50055,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50056,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50056,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "3.86.20.168",
+        "puerto_origen": 57619,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50060,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "44.196.46.142",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 50056,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "44.196.46.142",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 50056,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50056,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "44.196.46.142",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 50055,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "44.196.46.142",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 50055,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50055,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50055,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50055,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "3.86.20.168",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 57619,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "44.196.46.142",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 50060,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50060,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50060,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "44.196.46.142",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 50055,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "44.196.46.142",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 50056,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "44.196.46.142",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 50056,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "44.196.46.142",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 50056,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50056,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50056,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50056,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "44.196.46.142",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 50060,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "44.196.46.142",
+        "ip_destino": "192.168.1.6",
+        "puerto_origen": 443,
+        "puerto_destino": 50060,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50060,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    },
+    {
+        "hora": "13:23:03",
+        "ip_origen": "192.168.1.6",
+        "ip_destino": "44.196.46.142",
+        "puerto_origen": 50060,
+        "puerto_destino": 443,
+        "protocolo": "TCP",
+        "estado": "Activo",
+        "etiqueta": "BENIGN"
+    }
+]

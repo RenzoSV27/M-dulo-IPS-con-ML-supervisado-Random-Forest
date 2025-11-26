@@ -9,4 +9,3 @@ INSTRUCCIONES MÓDULO IPS
 3. Ejecutar captura de red (desde la carpeta raíz):
    python IPS/capturaRed.py
 
-NOTA: Requiere permisos de administrador para capturar tráfico de red.
