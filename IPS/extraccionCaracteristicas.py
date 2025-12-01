@@ -52,7 +52,7 @@ class ExtractorCaracteristicas:
         if es_forward:
             flujo['paquetes_fwd'].append(tamaño)
             if len(flujo['tiempos_fwd']) > 0:
-                iat = (timestamp - flujo['ultimo_paquete']).total_seconds() * 1000000  # microsegundos
+                iat = (timestamp - flujo['ultimo_paquete']).total_seconds() * 1000000  
                 flujo['tiempos_fwd'].append(iat)
             else:
                 flujo['tiempos_fwd'].append(0)
