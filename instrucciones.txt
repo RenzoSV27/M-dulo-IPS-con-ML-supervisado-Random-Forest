@@ -8,4 +8,18 @@ INSTRUCCIONES MÓDULO IPS
 
 3. Ejecutar captura de red (desde la carpeta raíz):
    python IPS/capturaRed.py
+   
+   NOTA: Para que el bloqueo automático funcione, ejecuta como Administrador.
+   El sistema bloqueará automáticamente las IPs de atacantes detectados.
+
+4. Simular ataques (opcional, para pruebas):
+   python IPS/simularAtaques.py
+   python IPS/simularAtaques.py "Web Attack - XSS"  (ataque específico)
+
+5. Gestionar bloqueos:
+   python IPS/gestionarBloqueos.py
+   - Ver IPs bloqueadas
+   - Desbloquear IPs
+   - Bloquear IPs manualmente
+   - Limpiar bloqueos expirados
 

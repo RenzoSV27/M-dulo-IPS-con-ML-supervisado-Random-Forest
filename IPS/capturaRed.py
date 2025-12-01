@@ -11,6 +11,13 @@ except ImportError:
     print("Modulos ML no disponibles. El sistema funcionara sin deteccion ML.")
     ML_DISPONIBLE = False
 
+try:
+    from bloqueadorIPS import bloquear_ip, esta_bloqueada, limpiar_bloqueos_expirados
+    BLOQUEO_DISPONIBLE = True
+except ImportError:
+    print("Modulo de bloqueo no disponible. El sistema funcionara sin prevencion.")
+    BLOQUEO_DISPONIBLE = False
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 carpeta_salida = os.path.join(SCRIPT_DIR, "CapturaTrafico")
 archivo_json = os.path.join(carpeta_salida, "trafico.json")
@@ -49,6 +56,16 @@ if ML_DISPONIBLE:
         detector = None
         extractor = None
 
+# Limpiar bloqueos expirados al iniciar
+if BLOQUEO_DISPONIBLE:
+    try:
+        expirados = limpiar_bloqueos_expirados()
+        if expirados > 0:
+            print(f"Bloqueos expirados eliminados: {expirados}")
+        print("Sistema de bloqueo IPS activado")
+    except Exception as e:
+        print(f"Error al inicializar bloqueo: {e}")
+
 protocolos = {
     1: "ICMP",
     6: "TCP",
@@ -67,6 +84,11 @@ def procesarPaquete(paquete):
     if paquete.haslayer("IP"):
         ip_origen = paquete["IP"].src
         ip_destino = paquete["IP"].dst
+        
+        # Verificar si la IP origen ya está bloqueada
+        if BLOQUEO_DISPONIBLE and esta_bloqueada(ip_origen):
+            # No procesar paquetes de IPs bloqueadas
+            return
         protocolo_num = paquete["IP"].proto
         protocolo_nombre = protocolos.get(protocolo_num, f"Desconocido ({protocolo_num})")
         estado = "Activo"
@@ -144,6 +166,23 @@ def procesarPaquete(paquete):
                         datos['alerta'] = True
                         datos['probabilidad'] = prediccion_ml['probabilidad']
                         
+                        # BLOQUEO AUTOMÁTICO DE LA IP ATAQUE
+                        ip_bloqueada = False
+                        mensaje_bloqueo = ""
+                        if BLOQUEO_DISPONIBLE:
+                            if not esta_bloqueada(ip_origen):
+                                resultado_bloqueo = bloquear_ip(
+                                    ip_origen,
+                                    tipo_ataque=prediccion_ml['prediccion'],
+                                    probabilidad=prediccion_ml['probabilidad'],
+                                    tiempo_bloqueo_horas=24
+                                )
+                                ip_bloqueada = resultado_bloqueo['exito']
+                                mensaje_bloqueo = resultado_bloqueo['mensaje']
+                            else:
+                                ip_bloqueada = True
+                                mensaje_bloqueo = f"IP {ip_origen} ya estaba bloqueada"
+                        
                         try:
                             with open(archivo_alertas, "r") as f:
                                 alertas = json.load(f)
@@ -157,14 +196,21 @@ def procesarPaquete(paquete):
                             "puerto_origen": puerto_origen,
                             "puerto_destino": puerto_destino,
                             "tipo_ataque": prediccion_ml['prediccion'],
-                            "probabilidad": prediccion_ml['probabilidad']
+                            "probabilidad": prediccion_ml['probabilidad'],
+                            "ip_bloqueada": ip_bloqueada
                         }
                         alertas.append(alerta)
                         
                         with open(archivo_alertas, "w") as f:
                             json.dump(alertas[-100:], f, indent=4)
                         
-                        print(f"ALERTA: {prediccion_ml['prediccion']} ({prediccion_ml['probabilidad']*100:.1f}%) | {ip_origen}:{puerto_origen} -> {ip_destino}:{puerto_destino}")
+                        # Mensaje de alerta con información de bloqueo
+                        mensaje_alerta = f"ALERTA: {prediccion_ml['prediccion']} ({prediccion_ml['probabilidad']*100:.1f}%) | {ip_origen}:{puerto_origen} -> {ip_destino}:{puerto_destino}"
+                        if ip_bloqueada:
+                            mensaje_alerta += f" | 🔒 IP BLOQUEADA"
+                        print(mensaje_alerta)
+                        if mensaje_bloqueo:
+                            print(f"  → {mensaje_bloqueo}")
             except Exception as e:
                 print(f"Error en deteccion ML: {e}")
 
